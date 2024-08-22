@@ -148,7 +148,7 @@ async function loadOrScanAddressBatch(bip32, callback, callbackSetRawAddresses, 
 
         for (let addressIndex = 0; addressIndex <= lastReceiveIndex; addressIndex++) {
             const addressType = 0; // Receive
-            const derivationPath = `44'/111111'/0'/${addressType}/${addressIndex}`;
+            const derivationPath = `44'/121337'/0'/${addressType}/${addressIndex}`;
             const address = bip32.getAddress(addressType, addressIndex);
             const receiveAddress = {
                 key: address,
@@ -207,7 +207,7 @@ async function demoLoadAddress(bip32, setAddresses, setRawAddresses, lastReceive
             key: i,
             address: bip32.getAddress(0, i),
             balance,
-            derivationPath: `44'/111111'/0'/0/${i}`,
+            derivationPath: `44'/121337'/0'/0/${i}`,
             utxos: [],
             loading: true,
         };
@@ -242,7 +242,7 @@ async function demoLoadAddress(bip32, setAddresses, setRawAddresses, lastReceive
 }
 
 async function getXPubFromLedger() {
-    const { chainCode, compressedPublicKey } = await getAddress("44'/111111'/0'");
+    const { chainCode, compressedPublicKey } = await getAddress("44'/121337'/0'");
     return { chainCode, compressedPublicKey };
 }
 
@@ -279,7 +279,7 @@ export default function Dashboard() {
         try {
             const newReceiveAddressIndex = userSettings.getSetting('lastReceiveIndex') + 1;
 
-            const derivationPath = `44'/111111'/0'/0/${newReceiveAddressIndex}`;
+            const derivationPath = `44'/121337'/0'/0/${newReceiveAddressIndex}`;
             const { address } =
                 deviceType === 'demo'
                     ? { address: bip32base.getAddress(0, newReceiveAddressIndex) }

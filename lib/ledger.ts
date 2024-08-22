@@ -217,7 +217,7 @@ export async function getAppAndVersion(transport) {
     };
 }
 
-export async function getAddress(path = "44'/111111'/0'/0/0", display = false) {
+export async function getAddress(path = "44'/121337'/0'/0/0", display = false) {
     if (!transportState.transport) {
         throw new Error('Ledger not connected');
     }
