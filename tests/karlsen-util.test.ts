@@ -1,4 +1,8 @@
-import { addressToPublicKey, publicKeyToAddress, addressToScriptPublicKey } from '@/lib/karlsen-util';
+import {
+    addressToPublicKey,
+    publicKeyToAddress,
+    addressToScriptPublicKey,
+} from '@/lib/karlsen-util';
 
 describe('addressToPublicKey', () => {
     it('should be able to round-trip', () => {

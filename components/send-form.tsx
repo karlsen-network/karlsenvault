@@ -46,7 +46,8 @@ export default function SendForm(props) {
         },
         validate: {
             amount: (value) => (!(Number(value) > 0) ? 'Amount must be greater than 0' : null),
-            sendTo: (value) => (!/^karlsen\:[a-z0-9]{61,63}$/.test(value) ? 'Invalid address' : null),
+            sendTo: (value) =>
+                !/^karlsen\:[a-z0-9]{61,63}$/.test(value) ? 'Invalid address' : null,
         },
         validateInputOnBlur: true,
     });

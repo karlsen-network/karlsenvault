@@ -19,7 +19,9 @@ let transportState = {
 };
 
 export async function fetchTransaction(transactionId: string) {
-    const { data: txData } = await axios.get(`https://api.karlsencoin.com/transactions/${transactionId}`);
+    const { data: txData } = await axios.get(
+        `https://api.karlsencoin.com/transactions/${transactionId}`,
+    );
 
     return txData;
 }
@@ -136,7 +138,9 @@ export async function fetchAddressBalance(address) {
 
 export async function fetchAddressDetails(address, derivationPath) {
     const balanceData = await fetchAddressBalance(address);
-    const { data: utxoData } = await axios.get(`https://api.karlsencoin.com/addresses/${address}/utxos`);
+    const { data: utxoData } = await axios.get(
+        `https://api.karlsencoin.com/addresses/${address}/utxos`,
+    );
 
     // UTXOs sorted by decreasing amount. Using the biggest UTXOs first minimizes number of utxos needed
     // in a transaction
