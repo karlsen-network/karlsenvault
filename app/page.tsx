@@ -30,12 +30,12 @@ async function getAppData(router, deviceType = 'usb') {
         const transport = await initTransport(deviceType);
         const { name } = await getAppAndVersion(transport);
 
-        if (name == 'Kaspa') {
+        if (name == 'Karlsen') {
             return router.push(`/wallet?deviceType=${deviceType}`);
         } else {
             notifications.show({
                 title: 'Action Required',
-                message: 'Please open the Kaspa app on your device.',
+                message: 'Please open the Karlsen app on your device.',
             });
         }
     } catch (e) {
@@ -63,10 +63,10 @@ async function getAppData(router, deviceType = 'usb') {
 }
 
 const WHITELIST = [
-    'kasvault.io',
-    'preview.kasvault.io',
-    'privatepreview.kasvault.io',
-    'kasvault.vercel.app',
+    'karlsenvault.io',
+    'preview.karlsenvault.io',
+    'privatepreview.karlsenvault.io',
+    'karlsenvault.vercel.app',
 ];
 
 export default function Home() {
@@ -87,7 +87,7 @@ export default function Home() {
             }
         }
 
-        setIsShowDemo(window.location.hostname !== 'kasvault.io');
+        setIsShowDemo(window.location.hostname !== 'karlsenvault.io');
     }, []);
 
     const smallStyles = width <= 48 * 16 ? { fontSize: '1rem' } : {};
@@ -121,8 +121,8 @@ export default function Home() {
             <Group className={styles.center}>
                 <Image
                     className={styles.logo}
-                    src='/kasvault-full-stk.svg'
-                    alt='KasVault'
+                    src='/karlsenvault-full-stk.svg'
+                    alt='KarlsenVault'
                     width={180}
                     height={180}
                     priority

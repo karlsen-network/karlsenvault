@@ -1,6 +1,6 @@
-import KaspaBIP32 from '@/lib/bip32';
+import KarlsenBIP32 from '@/lib/bip32';
 
-describe('KaspaBIP32', () => {
+describe('KarlsenBIP32', () => {
     it('should generate the expected addresses', () => {
         // These addresses were generated from the ledger device, whose public key and chain code
         // for 44'/111111'/0' are:
@@ -9,19 +9,19 @@ describe('KaspaBIP32', () => {
         const testCases = [
             {
                 derivationPath: "44'/111111'/0'/0/0",
-                address: 'kaspa:qzese5lc37m2a9np8k5gect4l2jj8svyqq392p7aa7mxsqarjg9sjgxr4wvru',
+                address: 'karlsen:qzese5lc37m2a9np8k5gect4l2jj8svyqq392p7aa7mxsqarjg9sjgxr4wvru',
             },
             {
                 derivationPath: "44'/111111'/0'/0/1",
-                address: 'kaspa:qqdpnpjcqmzntn4z4y082t5jjvn7rv2wejfy38ljnjvreyg3d7jwv4uj86vlt',
+                address: 'karlsen:qqdpnpjcqmzntn4z4y082t5jjvn7rv2wejfy38ljnjvreyg3d7jwv4uj86vlt',
             },
             {
                 derivationPath: "44'/111111'/0'/1/0",
-                address: 'kaspa:qzvqsl48dyhu7wy8jxklwa9n9gwyprq44xsmylnhzxlmhzarfd6vwrrjuekuw',
+                address: 'karlsen:qzvqsl48dyhu7wy8jxklwa9n9gwyprq44xsmylnhzxlmhzarfd6vwrrjuekuw',
             },
             {
                 derivationPath: "44'/111111'/0'/1/1",
-                address: 'kaspa:qza444ye2lt384jl4u9jf8kd2pe4m2yr44nq9u5g5ush8qzlskaauh2mk4ezp',
+                address: 'karlsen:qza444ye2lt384jl4u9jf8kd2pe4m2yr44nq9u5g5ush8qzlskaauh2mk4ezp',
             },
         ];
 
@@ -33,7 +33,7 @@ describe('KaspaBIP32', () => {
             '0ba599a9c5bad1106065eab47b48efa070f4b31e9639c9d096f7756b248a6ff4',
             'hex',
         );
-        const bip32 = new KaspaBIP32(compressedPublicKey, chainCode);
+        const bip32 = new KarlsenBIP32(compressedPublicKey, chainCode);
 
         for (const testCase of testCases) {
             const path = testCase.derivationPath.split('/');

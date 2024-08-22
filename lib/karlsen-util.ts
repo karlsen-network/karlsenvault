@@ -108,7 +108,7 @@ export function publicKeyToAddress(
     }
 
     var eight0: number[] = [0, 0, 0, 0, 0, 0, 0, 0];
-    var prefixData = prefixToArray('kaspa').concat([0]);
+    var prefixData = prefixToArray('karlsen').concat([0]);
     var versionByte: number = getTypeBits(type);
     var arr: number[] = Array.prototype.slice.call(hashBuffer, 0);
     var payloadData: number[] = convertBits([versionByte].concat(arr), 8, 5);
@@ -117,7 +117,7 @@ export function publicKeyToAddress(
     if (stripPrefix === true) {
         return base32.encode(payload);
     } else {
-        return 'kaspa:' + base32.encode(payload);
+        return 'karlsen:' + base32.encode(payload);
     }
 }
 
@@ -162,12 +162,12 @@ export function addressToScriptPublicKey(address: string): string {
     }
 }
 
-export function sompiToKas(amount: number) {
+export function sompiToKls(amount: number) {
     const amountStr = '00000000' + amount;
     return Number(amountStr.slice(0, -8) + '.' + amountStr.slice(-8));
 }
 
-export function kasToSompi(amount: number) {
+export function klsToSompi(amount: number) {
     const amountStr = String(amount);
     const parts = amountStr.split('.');
 

@@ -96,12 +96,12 @@ export default function TransactionsTab(props) {
                             <Group justify='space-between'>
                                 <Text>{row.timestamp}</Text>
                                 <Badge color={row.amount <= 0 ? 'red' : 'green'}>
-                                    {row.amount}&nbsp;KAS
+                                    {row.amount}&nbsp;KLS
                                 </Badge>
                             </Group>
 
                             <Anchor
-                                href={`https://explorer.kaspa.org/txs/${row.transactionId}`}
+                                href={`https://explorer.karlsencoin.com/txs/${row.transactionId}`}
                                 target='_blank'
                                 className={styles.transaction}
                                 ff={'Roboto Mono,Courier New,Courier,monospace'}

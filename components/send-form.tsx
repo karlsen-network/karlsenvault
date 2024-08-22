@@ -20,7 +20,7 @@ import { useState, useEffect } from 'react';
 import { createTransaction, sendAmount, selectUtxos } from '@/lib/ledger';
 import AddressText from '@/components/address-text';
 import { useForm } from '@mantine/form';
-import { kasToSompi, sompiToKas, NETWORK_UTXO_LIMIT } from '@/lib/kaspa-util';
+import { klsToSompi, sompiToKls, NETWORK_UTXO_LIMIT } from '@/lib/karlsen-util';
 
 export default function SendForm(props) {
     const [confirming, setConfirming] = useState(false);
@@ -46,7 +46,7 @@ export default function SendForm(props) {
         },
         validate: {
             amount: (value) => (!(Number(value) > 0) ? 'Amount must be greater than 0' : null),
-            sendTo: (value) => (!/^kaspa\:[a-z0-9]{61,63}$/.test(value) ? 'Invalid address' : null),
+            sendTo: (value) => (!/^karlsen\:[a-z0-9]{61,63}$/.test(value) ? 'Invalid address' : null),
         },
         validateInputOnBlur: true,
     });
@@ -115,7 +115,7 @@ export default function SendForm(props) {
         } else if (deviceType == 'usb') {
             try {
                 const { tx } = createTransaction(
-                    kasToSompi(Number(form.values.amount)),
+                    klsToSompi(Number(form.values.amount)),
                     form.values.sendTo,
                     props.addressContext.utxos,
                     props.addressContext.derivationPath,
@@ -131,7 +131,7 @@ export default function SendForm(props) {
 
                 if (e.statusCode == 0xb005 && props.addressContext.utxos.length > 15) {
                     // This is probably a Nano S
-                    const maxCompoundableAmount = sompiToKas(
+                    const maxCompoundableAmount = sompiToKls(
                         props.addressContext.utxos.slice(0, 15).reduce((acc, utxo) => {
                             return acc + utxo.amount;
                         }, 0),
@@ -139,7 +139,7 @@ export default function SendForm(props) {
                     notifications.show({
                         title: 'Error',
                         color: 'red',
-                        message: `You have too many UTXOs to send this amount. Please compound first by sending KAS to your address. Maximum sendable without compounding (including fee): ${maxCompoundableAmount}`,
+                        message: `You have too many UTXOs to send this amount. Please compound first by sending KLS to your address. Maximum sendable without compounding (including fee): ${maxCompoundableAmount}`,
                         autoClose: false,
                         loading: false,
                     });
@@ -170,10 +170,10 @@ export default function SendForm(props) {
                 utxos,
                 fee: feeCalcResult,
                 total: utxoTotalAmount,
-            } = selectUtxos(kasToSompi(amount), props.addressContext.utxos, includeFeeInAmount);
+            } = selectUtxos(klsToSompi(amount), props.addressContext.utxos, includeFeeInAmount);
 
             if (utxos.length > NETWORK_UTXO_LIMIT) {
-                const maxCompoundableAmount = sompiToKas(
+                const maxCompoundableAmount = sompiToKls(
                     utxos.slice(0, NETWORK_UTXO_LIMIT).reduce((acc, utxo) => {
                         return acc + utxo.amount;
                     }, 0),
@@ -181,27 +181,27 @@ export default function SendForm(props) {
                 notifications.show({
                     title: 'Error',
                     color: 'red',
-                    message: `You have too many UTXOs to send this amount. Please compound first by sending KAS to your address. Maximum sendable without compounding (including fee): ${maxCompoundableAmount}`,
+                    message: `You have too many UTXOs to send this amount. Please compound first by sending KLS to your address. Maximum sendable without compounding (including fee): ${maxCompoundableAmount}`,
                     autoClose: false,
                     loading: false,
                 });
                 setCanSendAmount(false);
             } else if (hasEnough) {
-                let changeAmount = utxoTotalAmount - kasToSompi(amount);
+                let changeAmount = utxoTotalAmount - klsToSompi(amount);
                 if (!includeFeeInAmount) {
                     changeAmount -= feeCalcResult;
                 }
 
                 let expectedFee = feeCalcResult;
-                // The change is added to the fee if it's less than 0.0001 KAS
+                // The change is added to the fee if it's less than 0.0001 KLS
                 console.info('changeAmount', changeAmount);
                 if (changeAmount < 10000) {
                     console.info(`Adding dust change ${changeAmount} sompi to fee`);
                     expectedFee += changeAmount;
                 }
 
-                calculatedFee = sompiToKas(expectedFee);
-                const afterFeeDisplay = sompiToKas(kasToSompi(amount) - expectedFee);
+                calculatedFee = sompiToKls(expectedFee);
+                const afterFeeDisplay = sompiToKls(klsToSompi(amount) - expectedFee);
                 setCanSendAmount(true);
                 if (includeFeeInAmount) {
                     setAmountDescription(`Amount after fee: ${afterFeeDisplay}`);
@@ -226,7 +226,7 @@ export default function SendForm(props) {
         }, 0);
 
         form.setValues({
-            amount: sompiToKas(total),
+            amount: sompiToKls(total),
             includeFeeInAmount: true,
         });
     };
@@ -243,7 +243,7 @@ export default function SendForm(props) {
                 />
 
                 <NumberInput
-                    label='Amount in KAS'
+                    label='Amount in KLS'
                     placeholder='0'
                     min={0}
                     decimalScale={8}
@@ -296,7 +296,7 @@ export default function SendForm(props) {
                     <Text fw={600}>Transaction ID</Text>
 
                     <Anchor
-                        href={`https://explorer.kaspa.org/txs/${form.values.sentTxId}`}
+                        href={`https://explorer.karlsencoin.com/txs/${form.values.sentTxId}`}
                         target='_blank'
                         c='brand'
                         w={'calc(var(--modal-size) - 6rem)'}
@@ -306,7 +306,7 @@ export default function SendForm(props) {
                     </Anchor>
 
                     <Text component='h2' fw={600}>
-                        {form.values.sentAmount} KAS
+                        {form.values.sentAmount} KLS
                     </Text>
 
                     <Text>sent to</Text>

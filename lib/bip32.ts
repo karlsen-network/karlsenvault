@@ -1,10 +1,10 @@
 import ecc from '@bitcoinerlab/secp256k1';
 import BIP32Factory, { BIP32API, BIP32Interface } from 'bip32';
-import { publicKeyToAddress } from './kaspa-util';
+import { publicKeyToAddress } from './karlsen-util';
 
 const bip32: BIP32API = BIP32Factory(ecc);
 
-export default class KaspaBIP32 {
+export default class KarlsenBIP32 {
     rootNode: BIP32Interface;
 
     constructor(compressedPublicKey: Buffer, chainCode: Buffer) {

@@ -12,13 +12,13 @@ import { useSearchParams } from 'next/navigation';
 import { LockedDeviceError } from '@ledgerhq/errors';
 import sha256 from 'crypto-js/sha256';
 
-import KaspaBIP32 from '../../lib/bip32';
+import KarlsenBIP32 from '../../lib/bip32';
 import { delay } from '@/lib/util';
 
 import { useElementSize } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import SettingsStore from '@/lib/settings-store';
-import { kasToSompi, sompiToKas, NETWORK_UTXO_LIMIT } from '@/lib/kaspa-util';
+import { klsToSompi, sompiToKls, NETWORK_UTXO_LIMIT } from '@/lib/karlsen-util';
 
 let loadingAddressBatch = false;
 let addressInitialized = false;
@@ -37,7 +37,7 @@ function loadAddressDetails(rawAddress) {
     const fetchAddressPromise = fetchAddressDetails(rawAddress.address, rawAddress.derivationPath);
 
     return fetchAddressPromise.then((addressDetails) => {
-        rawAddress.balance = sompiToKas(addressDetails.balance);
+        rawAddress.balance = sompiToKls(addressDetails.balance);
         rawAddress.utxos = addressDetails.utxos;
         // rawAddress.txCount = addressDetails.txCount;
         rawAddress.loading = false;
@@ -215,14 +215,14 @@ async function demoLoadAddress(bip32, setAddresses, setRawAddresses, lastReceive
         currAddress.utxos.push({
             prevTxId: 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
             outpointIndex: 0,
-            amount: kasToSompi(balance - (NETWORK_UTXO_LIMIT - 1)),
+            amount: klsToSompi(balance - (NETWORK_UTXO_LIMIT - 1)),
         });
 
         for (let j = 0; j < NETWORK_UTXO_LIMIT - 1; j++) {
             currAddress.utxos.push({
                 prevTxId: 'FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF',
                 outpointIndex: 0,
-                amount: kasToSompi(1),
+                amount: klsToSompi(1),
             });
         }
 
@@ -268,7 +268,7 @@ export default function Dashboard() {
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [activeTab, setActiveTab] = useState('addresses');
     const [isTransportInitialized, setTransportInitialized] = useState(false);
-    const [bip32base, setBIP32Base] = useState<KaspaBIP32>();
+    const [bip32base, setBIP32Base] = useState<KarlsenBIP32>();
     const [userSettings, setUserSettings] = useState<SettingsStore>();
     const [enableGenerate, setEnableGenerate] = useState(false);
 
@@ -361,7 +361,7 @@ export default function Dashboard() {
         if (deviceType === 'demo') {
             setTransportInitialized(true);
             const xpub = getDemoXPub();
-            setBIP32Base(new KaspaBIP32(xpub.compressedPublicKey, xpub.chainCode));
+            setBIP32Base(new KarlsenBIP32(xpub.compressedPublicKey, xpub.chainCode));
             return () => {};
         }
 
@@ -373,7 +373,7 @@ export default function Dashboard() {
                     setTransportInitialized(true);
 
                     return getXPubFromLedger().then((xpub) =>
-                        setBIP32Base(new KaspaBIP32(xpub.compressedPublicKey, xpub.chainCode)),
+                        setBIP32Base(new KarlsenBIP32(xpub.compressedPublicKey, xpub.chainCode)),
                     );
                 }
 
@@ -383,7 +383,7 @@ export default function Dashboard() {
                 notifications.show({
                     title: 'Error',
                     color: 'red',
-                    message: 'Please make sure your device is unlocked and the Kaspa app is open',
+                    message: 'Please make sure your device is unlocked and the Karlsen app is open',
                     autoClose: false,
                 });
                 console.error(e);

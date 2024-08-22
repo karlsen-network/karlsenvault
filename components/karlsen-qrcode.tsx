@@ -1,6 +1,6 @@
 import { QRCode } from 'react-qrcode-logo';
 
-export default function KaspaQrCode(props) {
+export default function KarlsenQrCode(props) {
     return (
         <QRCode
             value={props.value}

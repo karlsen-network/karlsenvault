@@ -13,7 +13,7 @@ import {
 import { useViewportSize } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { useRef, useState, useEffect } from 'react';
-import KaspaQrCode from '@/components/kaspa-qrcode';
+import KarlsenQrCode from '@/components/karlsen-qrcode';
 import SendForm from '@/components/send-form';
 import MessageForm from '@/components/message-form';
 import { IconCopy, IconCheck, IconShieldCheckFilled, IconShield } from '@tabler/icons-react';
@@ -22,7 +22,7 @@ import { fetchAddressDetails, fetchTransaction, getAddress } from '@/lib/ledger'
 import { delay } from '@/lib/util';
 
 import styles from './overview-tab.module.css';
-import { sompiToKas } from '@/lib/kaspa-util';
+import { sompiToKls } from '@/lib/karlsen-util';
 
 export default function OverviewTab(props) {
     const groupRef = useRef(null);
@@ -128,7 +128,7 @@ export default function OverviewTab(props) {
                 selectedAddress.derivationPath,
             );
 
-            selectedAddress.balance = sompiToKas(addressDetails.balance);
+            selectedAddress.balance = sompiToKls(addressDetails.balance);
             selectedAddress.utxos = addressDetails.utxos;
             selectedAddress.newTransactions++;
             // selectedAddress.txCount = addressDetails.txCount;
@@ -236,13 +236,13 @@ export default function OverviewTab(props) {
                             </Tooltip>
                         </Text>
 
-                        <KaspaQrCode value={selectedAddress.address} />
+                        <KarlsenQrCode value={selectedAddress.address} />
 
                         <Group gap={'xs'}>
                             {updatingDetails ? (
                                 <Loader size={20} />
                             ) : (
-                                <Text fz='lg'>{selectedAddress.balance} KAS</Text>
+                                <Text fz='lg'>{selectedAddress.balance} KLS</Text>
                             )}
                         </Group>
                     </Stack>

@@ -2,10 +2,10 @@ import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
-import { publicKeyToAddress, addressToScriptPublicKey } from './kaspa-util';
+import { publicKeyToAddress, addressToScriptPublicKey } from './karlsen-util';
 
-import { TransactionInput, TransactionOutput, Transaction } from 'hw-app-kaspa';
-import Kaspa from 'hw-app-kaspa';
+import { TransactionInput, TransactionOutput, Transaction } from 'hw-app-karlsen';
+import Karlsen from 'hw-app-karlsen';
 
 axiosRetry(axios, { retries: 3 });
 
@@ -19,7 +19,7 @@ let transportState = {
 };
 
 export async function fetchTransaction(transactionId: string) {
-    const { data: txData } = await axios.get(`https://api.kaspa.org/transactions/${transactionId}`);
+    const { data: txData } = await axios.get(`https://api.karlsencoin.com/transactions/${transactionId}`);
 
     return txData;
 }
@@ -45,11 +45,9 @@ export function selectUtxos(
     feeIncluded: boolean = false,
 ): UtxoSelectionResult {
     // Fee does not have to be accurate. It just has to be over the absolute minimum.
-    // https://kaspa-mdbook.aspectron.com/transactions/constraints/fees.html
     // Fee = (total mass) x (min_relay_tx_fee) / 1000
     // Since min_relay_tx_fee == 1000, really it's just:
     // Fee = total mass
-    // https://kaspa-mdbook.aspectron.com/transactions/constraints/size.html
     // 239 mass = 2 (version) + 8 (# inputs) + 8 (# outputs)
     //          + 8 (lock time) + 20 (subnetwork id) + 8 (gas)
     //          + 32 (payload hash) + 8 (payload len) + 32 (payload)
@@ -57,7 +55,6 @@ export function selectUtxos(
     //               8 (value) + 2 (out version) + 8 (script len) + 35 (script) + 8 (if we're sending to multisig (2 sigops)) // output1 = 61
     //             + 8 (value) + 2 (out version) + 8 (script len) + 34 (script) // output2 = 52
     //            ]
-    // https://kaspa-mdbook.aspectron.com/transactions/constraints/mass.html#transaction-mass-limits
     // 690 mass = [35 output1 script len + 34 output2 script len] x 10   // 10 = mass_per_script_pub_key_byte
     // If there is only one output, Fee calculation will be over by close to 0.00000500
     // Otherwise, it will only be off by about 0.00000020. These overages in both cases are tolerable
@@ -73,7 +70,7 @@ export function selectUtxos(
 
     // UTXOs is sorted descending:
     for (const utxo of utxosInput) {
-        fee += 1118; // 1118 is described here https://kaspa-mdbook.aspectron.com/transactions/constraints/mass.html#input-mass
+        fee += 1118;
         total += utxo.amount;
 
         selected.push(utxo);
@@ -117,7 +114,7 @@ export async function initTransport(type = 'usb') {
 
 export async function fetchTransactionCount(address) {
     const { data: txCount } = await axios.get(
-        `https://api.kaspa.org/addresses/${address}/transactions-count`,
+        `https://api.karlsencoin.com/addresses/${address}/transactions-count`,
     );
 
     return txCount.total || 0;
@@ -131,7 +128,7 @@ export type UtxoInfo = {
 
 export async function fetchAddressBalance(address) {
     const { data: balanceData } = await axios.get(
-        `https://api.kaspa.org/addresses/${address}/balance`,
+        `https://api.karlsencoin.com/addresses/${address}/balance`,
     );
 
     return balanceData;
@@ -139,7 +136,7 @@ export async function fetchAddressBalance(address) {
 
 export async function fetchAddressDetails(address, derivationPath) {
     const balanceData = await fetchAddressBalance(address);
-    const { data: utxoData } = await axios.get(`https://api.kaspa.org/addresses/${address}/utxos`);
+    const { data: utxoData } = await axios.get(`https://api.karlsencoin.com/addresses/${address}/utxos`);
 
     // UTXOs sorted by decreasing amount. Using the biggest UTXOs first minimizes number of utxos needed
     // in a transaction
@@ -168,7 +165,7 @@ export async function fetchAddressDetails(address, derivationPath) {
 
 export async function fetchTransactions(address, offset = 0, limit = 100) {
     const { data: txsData } = await axios.get(
-        `https://api.kaspa.org/addresses/${address}/full-transactions?offset=${offset}&limit=${limit}&resolve_previous_outpoints=light`,
+        `https://api.karlsencoin.com/addresses/${address}/full-transactions?offset=${offset}&limit=${limit}&resolve_previous_outpoints=light`,
     );
 
     return txsData;
@@ -221,9 +218,9 @@ export async function getAddress(path = "44'/111111'/0'/0/0", display = false) {
         throw new Error('Ledger not connected');
     }
 
-    const kaspa = new Kaspa(transportState.transport);
+    const karlsen = new Karlsen(transportState.transport);
 
-    const publicKeyBuffer = await kaspa.getPublicKey(path, display);
+    const publicKeyBuffer = await karlsen.getPublicKey(path, display);
 
     // Index 0 is always 0x41 = (65) the length of the following full public key
     const publicKey = Buffer.from(publicKeyBuffer.subarray(1, 66));
@@ -243,7 +240,7 @@ export async function getAddress(path = "44'/111111'/0'/0/0", display = false) {
 export const sendTransaction = async (signedTx) => {
     const txJson = signedTx.toApiJSON();
 
-    const { data } = await axios.post(`https://api.kaspa.org/transactions`, txJson);
+    const { data } = await axios.post(`https://api.karlsencoin.com/transactions`, txJson);
 
     return data.transactionId;
 };
@@ -272,7 +269,7 @@ export function createTransaction(
     console.info(utxos);
 
     if (!hasEnough) {
-        // Show error we don't have enough KAS
+        // Show error we don't have enough KLS
         throw new Error('Amount too high.');
     }
 
@@ -333,8 +330,8 @@ export function createTransaction(
 
 export async function sendAmount(tx, deviceType) {
     const transport = await initTransport(deviceType);
-    const kaspa = new Kaspa(transport);
-    await kaspa.signTransaction(tx);
+    const karlsen = new Karlsen(transport);
+    await karlsen.signTransaction(tx);
 
     console.info('tx', tx);
 
@@ -351,6 +348,6 @@ export async function sendAmount(tx, deviceType) {
  */
 export async function signMessage(message, addressType, addressIndex, deviceType) {
     const transport = await initTransport(deviceType);
-    const kaspa = new Kaspa(transport);
-    return await kaspa.signMessage(message, addressType, addressIndex);
+    const karlsen = new Karlsen(transport);
+    return await karlsen.signMessage(message, addressType, addressIndex);
 }

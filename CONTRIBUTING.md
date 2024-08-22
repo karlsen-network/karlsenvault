@@ -8,7 +8,7 @@
 
 ## Philosophy
 
-- To protect user privacy kasvault MUST NOT send data to any external entity EXCEPT for sending signed transactions to the Rest API or a node
+- To protect user privacy karlsenvault MUST NOT send data to any external entity EXCEPT for sending signed transactions to the Rest API or a node
 
 ## Code
 
