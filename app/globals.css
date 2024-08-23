@@ -9,12 +9,12 @@
     --background-start-rgb: 40, 44, 52;
     --background-end-rgb: 40, 44, 52;
 
-    --primary-glow: radial-gradient(rgba(73, 234, 203, 0.2), rgba(73, 234, 203, 0));
+    --primary-glow: radial-gradient(rgba(56, 182, 255, 0.2), rgba(56, 182, 255, 0));
     --secondary-glow: linear-gradient(
         to bottom right,
-        rgba(73, 234, 203, 0),
-        rgba(73, 234, 203, 0),
-        rgba(73, 234, 203, 0.3)
+        rgba(56, 182, 255, 0),
+        rgba(56, 182, 255, 0),
+        rgba(56, 182, 255, 0.3)
     );
 
     --tile-start-rgb: 239, 245, 249;
@@ -41,12 +41,12 @@
         --background-start-rgb: 0, 0, 0;
         --background-end-rgb: 0, 0, 0;
 
-        --primary-glow: radial-gradient(rgba(73, 234, 203, 0.4), rgba(73, 234, 203, 0));
+        --primary-glow: radial-gradient(rgba(56, 182, 255, 0.4), rgba(56, 182, 255, 0));
         --secondary-glow: linear-gradient(
             to bottom right,
-            rgba(73, 234, 203, 0),
-            rgba(73, 234, 203, 0),
-            rgba(73, 234, 203, 0.3)
+            rgba(56, 182, 255, 0),
+            rgba(56, 182, 255, 0),
+            rgba(56, 182, 255, 0.3)
         );
 
         --tile-start-rgb: 2, 13, 46;
