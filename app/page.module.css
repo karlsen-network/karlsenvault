@@ -216,3 +216,30 @@
         transform: rotate(0deg);
     }
 }
+
+
+.tooltip {
+    position: relative;
+}
+
+.tooltip::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: lightgray;
+    color: white;
+    padding: 2px 5px; /* Reduce padding */
+    border-radius: 3px;
+    white-space: nowrap;
+    font-size: 0.75rem; /* Reduce font size */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
+}
