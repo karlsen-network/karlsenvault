@@ -13,6 +13,8 @@ import Image from 'next/image';
 import Header from '../components/header';
 import { useViewportSize } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
+import { FaGithub } from 'react-icons/fa';
+import { BiDonateHeart } from 'react-icons/bi';
 
 async function getAppData(router, deviceType = 'usb') {
     if (deviceType === 'demo') {
@@ -63,10 +65,7 @@ async function getAppData(router, deviceType = 'usb') {
 }
 
 const WHITELIST = [
-    'karlsenvault.io',
-    'preview.karlsenvault.io',
-    'privatepreview.karlsenvault.io',
-    'karlsenvault.vercel.app',
+    'vault.karlsencoin.com',
 ];
 
 export default function Home() {
@@ -74,6 +73,7 @@ export default function Home() {
     const { width } = useViewportSize();
     const [siteHostname, setSiteHostname] = useState('INVALID SITE');
     const [isShowDemo, setIsShowDemo] = useState(false);
+    const [commitHash, setCommitHash] = useState('');
 
     useEffect(() => {
         if (window.location.hostname === 'localhost') {
@@ -88,26 +88,33 @@ export default function Home() {
         }
 
         setIsShowDemo(window.location.hostname !== 'karlsenvault.io');
+
+        fetch('https://api.github.com/repos/karlsen-network/karlsenvault/commits/main')
+            .then(response => response.json())
+            .then(data => {
+                setCommitHash(data.sha.substring(0, 7));
+            })
+            .catch(error => console.error('Error fetching commit hash:', error));
     }, []);
 
     const smallStyles = width <= 48 * 16 ? { fontSize: '1rem' } : {};
 
-    const demoButton = isShowDemo ? (
-        <Stack
-            className={styles.card}
-            onClick={() => {
-                getAppData(router, 'demo');
-            }}
-            align='center'
-        >
-            <h2>
-                <Group style={smallStyles}>
-                    <IconBluetooth style={smallStyles} /> Go to Demo Mode <span>-&gt;</span>
-                </Group>
-            </h2>
-            <Text>(Replaced with bluetooth in the future)</Text>
-        </Stack>
-    ) : null;
+    // const demoButton = isShowDemo ? (
+    //     <Stack
+    //         className={styles.card}
+    //         onClick={() => {
+    //             getAppData(router, 'demo');
+    //         }}
+    //         align='center'
+    //     >
+    //         <h2>
+    //             <Group style={smallStyles}>
+    //                 <IconBluetooth style={smallStyles} /> Go to Demo Mode <span>-&gt;</span>
+    //             </Group>
+    //         </h2>
+    //         <Text>(Replaced with bluetooth in the future)</Text>
+    //     </Stack>
+    // ) : null;
 
     return (
         <Stack className={styles.main}>
@@ -130,7 +137,7 @@ export default function Home() {
             </Group>
 
             <Group>
-                {demoButton}
+                {/* {demoButton} */}
 
                 <Stack
                     className={styles.card}
@@ -148,6 +155,22 @@ export default function Home() {
                     <Text>All Ledger devices</Text>
                 </Stack>
             </Group>
+
+            <footer style={{ textAlign: 'center', marginTop: '2rem' }}>
+                <p className="fs-5" style={{ color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    Made with <span style={{ color: 'red', margin: '0 0.5rem' }}>♥</span> by Kaspa and Karlsen developers
+                    <a href="https://github.com/karlsen-network/karlsenvault" target="_blank" rel="noopener noreferrer" className={styles.tooltip} title="Source code">
+                        <FaGithub style={{ marginLeft: '0.5rem', width: '20.8px', height: '20.8px', color: 'white' }} />
+                    </a>
+                    <a href="https://explorer.karlsencoin.com/addresses/karlsen:qqe3p64wpjf5y27kxppxrgks298ge6lhu6ws7ndx4tswzj7c84qkjlrspcuxw" target="_blank" rel="noopener noreferrer" className={styles.tooltip} title="Donation address">
+                        <BiDonateHeart style={{ marginLeft: '0.5rem', width: '20.8px', height: '20.8px', color: 'white' }} />
+                    </a>
+                    &nbsp;&nbsp;|&nbsp;&nbsp; Build version: 
+                    <a href={`https://github.com/karlsen-network/karlsenvault/commit/${commitHash}`} target="_blank" rel="noopener noreferrer" style={{ color: 'lightgray', marginLeft: '0.5rem' }}>
+                        {commitHash}
+                    </a>
+                </p>
+            </footer>
         </Stack>
     );
 }
