@@ -9,19 +9,19 @@ describe('KarlsenBIP32', () => {
         const testCases = [
             {
                 derivationPath: "44'/121337'/0'/0/0",
-                address: 'karlsen:qzese5lc37m2a9np8k5gect4l2jj8svyqq392p7aa7mxsqarjg9sjgxr4wvru',
+                address: 'karlsen:qzese5lc37m2a9np8k5gect4l2jj8svyqq392p7aa7mxsqarjg9sjz32zqprh',
             },
             {
                 derivationPath: "44'/121337'/0'/0/1",
-                address: 'karlsen:qqdpnpjcqmzntn4z4y082t5jjvn7rv2wejfy38ljnjvreyg3d7jwv4uj86vlt',
+                address: 'karlsen:qqdpnpjcqmzntn4z4y082t5jjvn7rv2wejfy38ljnjvreyg3d7jwvltms5plq',
             },
             {
                 derivationPath: "44'/121337'/0'/1/0",
-                address: 'karlsen:qzvqsl48dyhu7wy8jxklwa9n9gwyprq44xsmylnhzxlmhzarfd6vwrrjuekuw',
+                address: 'karlsen:qzvqsl48dyhu7wy8jxklwa9n9gwyprq44xsmylnhzxlmhzarfd6vwf5mthmu9',
             },
             {
                 derivationPath: "44'/121337'/0'/1/1",
-                address: 'karlsen:qza444ye2lt384jl4u9jf8kd2pe4m2yr44nq9u5g5ush8qzlskaauh2mk4ezp',
+                address: 'karlsen:qza444ye2lt384jl4u9jf8kd2pe4m2yr44nq9u5g5ush8qzlskaauaajpm5z2',
             },
         ];
 

@@ -64,9 +64,7 @@ async function getAppData(router, deviceType = 'usb') {
     }
 }
 
-const WHITELIST = [
-    'vault.karlsencoin.com',
-];
+const WHITELIST = ['vault.karlsencoin.com'];
 
 export default function Home() {
     const router = useRouter();
@@ -90,11 +88,11 @@ export default function Home() {
         setIsShowDemo(window.location.hostname !== 'karlsenvault.io');
 
         fetch('https://api.github.com/repos/karlsen-network/karlsenvault/commits/main')
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 setCommitHash(data.sha.substring(0, 7));
             })
-            .catch(error => console.error('Error fetching commit hash:', error));
+            .catch((error) => console.error('Error fetching commit hash:', error));
     }, []);
 
     const smallStyles = width <= 48 * 16 ? { fontSize: '1rem' } : {};
@@ -157,16 +155,56 @@ export default function Home() {
             </Group>
 
             <footer style={{ textAlign: 'center', marginTop: '2rem' }}>
-                <p className="fs-5" style={{ color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    Made with <span style={{ color: 'red', margin: '0 0.5rem' }}>♥</span> by Kaspa and Karlsen developers
-                    <a href="https://github.com/karlsen-network/karlsenvault" target="_blank" rel="noopener noreferrer" className={styles.tooltip} title="Source code">
-                        <FaGithub style={{ marginLeft: '0.5rem', width: '20.8px', height: '20.8px', color: 'white' }} />
+                <p
+                    className='fs-5'
+                    style={{
+                        color: 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    Made with <span style={{ color: 'red', margin: '0 0.5rem' }}>♥</span> by Kaspa
+                    and Karlsen developers
+                    <a
+                        href='https://github.com/karlsen-network/karlsenvault'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className={styles.tooltip}
+                        title='Source code'
+                    >
+                        <FaGithub
+                            style={{
+                                marginLeft: '0.5rem',
+                                width: '20.8px',
+                                height: '20.8px',
+                                color: 'white',
+                            }}
+                        />
                     </a>
-                    <a href="https://explorer.karlsencoin.com/addresses/karlsen:qqe3p64wpjf5y27kxppxrgks298ge6lhu6ws7ndx4tswzj7c84qkjlrspcuxw" target="_blank" rel="noopener noreferrer" className={styles.tooltip} title="Donation address">
-                        <BiDonateHeart style={{ marginLeft: '0.5rem', width: '20.8px', height: '20.8px', color: 'white' }} />
+                    <a
+                        href='https://explorer.karlsencoin.com/addresses/karlsen:qqe3p64wpjf5y27kxppxrgks298ge6lhu6ws7ndx4tswzj7c84qkjlrspcuxw'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className={styles.tooltip}
+                        title='Donation address'
+                    >
+                        <BiDonateHeart
+                            style={{
+                                marginLeft: '0.5rem',
+                                width: '20.8px',
+                                height: '20.8px',
+                                color: 'white',
+                            }}
+                        />
                     </a>
-                    &nbsp;&nbsp;|&nbsp;&nbsp; Build version: 
-                    <a href={`https://github.com/karlsen-network/karlsenvault/commit/${commitHash}`} target="_blank" rel="noopener noreferrer" style={{ color: 'lightgray', marginLeft: '0.5rem' }}>
+                    &nbsp;&nbsp;|&nbsp;&nbsp; Build version:
+                    <a
+                        href={`https://github.com/karlsen-network/karlsenvault/commit/${commitHash}`}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        style={{ color: 'lightgray', marginLeft: '0.5rem' }}
+                    >
                         {commitHash}
                     </a>
                 </p>
