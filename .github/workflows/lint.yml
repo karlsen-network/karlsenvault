@@ -31,7 +31,6 @@ jobs:
       - name: Install Node.js dependencies
         run: |
           npm install
-          npm ci
 
       - name: Run ESlint
         run: |
